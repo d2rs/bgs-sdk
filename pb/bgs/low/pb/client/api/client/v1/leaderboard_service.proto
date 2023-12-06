@@ -1,0 +1,95 @@
+syntax = "proto2";
+
+package bgs.protocol.leaderboard.v1.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/account_types.proto";
+import "bgs/low/pb/client/api/client/v1/leaderboard_types.proto";
+
+option cc_generic_services = false;
+
+service LeaderboardService {
+	rpc GetRanks(.bgs.protocol.leaderboard.v1.client.GetRanksRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksResponse) { 
+		option (method_options).id = 11;
+	}
+	rpc GetRanksByPosition(.bgs.protocol.leaderboard.v1.client.GetRanksByPositionRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksByPositionResponse) { 
+		option (method_options).id = 12;
+	}
+	rpc GetRanksByPositionRange(.bgs.protocol.leaderboard.v1.client.GetRanksByPositionRangeRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksByPositionRangeResponse) { 
+		option (method_options).id = 13;
+	}
+	rpc GetRanksByEntityRange(.bgs.protocol.leaderboard.v1.client.GetRanksByEntityRangeRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksByEntityRangeResponse) { 
+		option (method_options).id = 14;
+	}
+	rpc GetRanksByEntityIds(.bgs.protocol.leaderboard.v1.client.GetRanksByEntityIdsRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksByEntityIdsResponse) { 
+		option (method_options).id = 15;
+	}
+	rpc GetRanksByClubId(.bgs.protocol.leaderboard.v1.client.GetRanksByClubIdRequest) returns(.bgs.protocol.leaderboard.v1.client.GetRanksByClubIdResponse) { 
+		option (method_options).id = 16;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.leaderboard.v1.client.LeaderboardService";
+	option (service_options).shard_name = "leaderboard";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message GetRanksRequest {
+	optional string leaderboard_id = 1 ;
+	optional uint64 continuation = 2;
+	optional uint32 count = 3 [default = 10] ;
+}
+message GetRanksResponse {
+	optional uint64 total_count = 1;
+	optional uint64 continuation = 2;
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 3;
+}
+message GetRanksByPositionRequest {
+	optional string leaderboard_id = 1 ;
+	repeated uint64 positions = 2 [packed = true];
+}
+message GetRanksByPositionResponse {
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 1;
+}
+message GetRanksByPositionRangeRequest {
+	optional string leaderboard_id = 1 ;
+	optional uint64 start_position = 2;
+	optional uint64 end_position = 3;
+}
+message GetRanksByPositionRangeResponse {
+	optional uint64 total_count = 1;
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 2;
+}
+message GetRanksByEntityRangeRequest {
+	optional string leaderboard_id = 1 ;
+	optional string entity_id = 2 ;
+	optional uint32 ranks_above = 3 ;
+	optional uint32 ranks_below = 4 ;
+}
+message GetRanksByEntityRangeResponse {
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 1;
+}
+message GetRanksByEntityIdsRequest {
+	optional string leaderboard_id = 1 ;
+	repeated string entity_ids = 2 ;
+}
+message GetRanksByEntityIdsResponse {
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 1;
+}
+message GetRanksByClubIdRequest {
+	optional string leaderboard_id = 1 ;
+	optional uint64 club_id = 2 ;
+	optional uint64 continuation = 3;
+}
+message GetRanksByClubIdResponse {
+	repeated bgs.protocol.leaderboard.v1.client.Rank ranks = 1;
+	optional uint64 continuation = 2;
+}
+

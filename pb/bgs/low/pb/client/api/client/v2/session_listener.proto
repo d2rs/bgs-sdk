@@ -1,0 +1,62 @@
+syntax = "proto2";
+
+package bgs.protocol.session.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/session_types.proto";
+
+option cc_generic_services = false;
+
+service SessionListener {
+	rpc OnSessionCreated(.bgs.protocol.session.v2.client.SessionCreatedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	rpc OnSessionDestroyed(.bgs.protocol.session.v2.client.SessionDestroyedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 2;
+	}
+	rpc OnSessionGameTimeWarning(.bgs.protocol.session.v2.client.SessionGameTimeWarningNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 4;
+	}
+	rpc OnSessionQueueUpdated(.bgs.protocol.session.v2.client.SessionQueueUpdatedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 5;
+	}
+	rpc OnSessionQueueEnd(.bgs.protocol.session.v2.client.SessionQueueEndNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 6;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.session.v2.client.SessionListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message SessionCreatedNotification {
+	optional uint32 status = 1;
+	optional bgs.protocol.session.v2.client.SessionKey session_key = 2;
+	optional bgs.protocol.session.v2.client.SessionId session_id = 3;
+}
+message SessionDestroyedNotification {
+	optional uint32 status = 1;
+	optional uint32 status_details = 2 ;
+}
+message SessionGameTimeWarningNotification {
+	optional uint32 remaining_time_duration_min = 1;
+	optional uint32 restriction_type = 2 ;
+}
+message SessionQueueUpdatedNotification {
+	optional uint32 position = 1;
+	optional uint64 avg_creation_time_ms = 2;
+	optional uint64 queued_time_ms = 3;
+}
+message SessionQueueEndNotification {
+	optional uint32 status = 1;
+}
+

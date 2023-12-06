@@ -1,0 +1,73 @@
+syntax = "proto2";
+
+package bgs.protocol.channel.v2.server;
+
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/api/client/v2/channel_enum.proto";
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/account_types.proto";
+import "bgs/low/pb/client/role_types.proto";
+import "bgs/low/pb/client/channel_role_set.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/channel_types.proto";
+import "bgs/low/pb/client/api/server/v2/channel_types.proto";
+
+option cc_generic_services = false;
+
+service ChannelServerListener {
+	rpc OnChannelStateChanged(.bgs.protocol.channel.v2.server.ChannelStateChangedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	rpc OnMemberAdded(.bgs.protocol.channel.v2.server.MemberAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 21;
+	}
+	rpc OnMemberRemoved(.bgs.protocol.channel.v2.server.MemberRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 22;
+	}
+	rpc OnMemberStateChanged(.bgs.protocol.channel.v2.server.MemberStateChangedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 23;
+	}
+	rpc OnMemberRoleChanged(.bgs.protocol.channel.v2.server.MemberRoleChangedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 24;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.channel.v2.server.ChannelServerListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+}
+
+message ChannelStateChangedNotification {
+	optional bgs.protocol.account.v1.GameAccountHandle agent_id = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 3;
+	optional bgs.protocol.channel.v2.ChannelStateAssignment assignment = 4;
+}
+message MemberAddedNotification {
+	optional bgs.protocol.account.v1.GameAccountHandle agent_id = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 3;
+	repeated bgs.protocol.channel.v2.Member member = 4;
+}
+message MemberRemovedNotification {
+	optional bgs.protocol.account.v1.GameAccountHandle agent_id = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 3;
+	optional uint32 reason = 4;
+	repeated bgs.protocol.account.v1.GameAccountHandle member_id = 5;
+	repeated uint64 member_account_id = 6;
+}
+message MemberStateChangedNotification {
+	optional bgs.protocol.account.v1.GameAccountHandle agent_id = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 3;
+	repeated bgs.protocol.channel.v2.MemberStateAssignment assignment = 5;
+}
+message MemberRoleChangedNotification {
+	optional bgs.protocol.account.v1.GameAccountHandle agent_id = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 3;
+	repeated bgs.protocol.channel.v2.RoleAssignment assignment = 5;
+}
+

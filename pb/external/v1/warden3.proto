@@ -1,0 +1,25 @@
+syntax = "proto2";
+
+package classic.protocol.external.v1.warden;
+
+option cc_generic_services = false;
+option optimize_for = CODE_SIZE;
+
+// 0xCAC7EF4C
+//service Warden3 {
+//	rpc Init(.bgs.protocol.NoData) returns(.bgs.protocol.NoData) {
+//		//option (method_options).id = 0x549EE06E;
+//	}
+//
+//  rpc SendPacketToServer(PacketRequest) returns(.bgs.protocol.NoData) {
+//		//option (method_options).id = 0xD025D23A;
+//  }
+//
+//  rpc SendPacketToClient(PacketRequest) returns(.bgs.protocol.NoData) {
+//		//option (method_options).id = 0xD3CA0B22;
+//  }
+//}
+//
+//message PacketRequest {
+//  repeated bytes payload = 1;
+//}

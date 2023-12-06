@@ -1,0 +1,39 @@
+syntax = "proto2";
+
+package bgs.protocol.club.v1;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+enum TagAction {
+	TAG_ACTION_NONE = 0;
+	TAG_ACTION_CLEAR = 1;
+	TAG_ACTION_SET = 2;
+}
+enum TagType {
+	TAG_TYPE_INVALID = 0;
+	TAG_TYPE_PLATFORM = 1;
+	TAG_TYPE_CUSTOM = 2;
+}
+
+message TagOptions {
+	optional uint32 action = 1 ;
+	repeated bgs.protocol.club.v1.TagIdentifier tag = 2;
+}
+message TagIdentifier {
+	optional uint32 id = 1;
+	optional uint32 type = 2 ;
+}
+message LocalizedTag {
+	optional bgs.protocol.club.v1.TagIdentifier tag_id = 1;
+	optional string name = 2;
+	optional string description = 3;
+}
+

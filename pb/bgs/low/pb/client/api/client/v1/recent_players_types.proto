@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package bgs.protocol.recent_players.v1.client;
+
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+
+message AddRecentPlayersOptions {
+	repeated bgs.protocol.recent_players.v1.client.RecentPlayerOptions recent_player = 2 ;
+	optional fixed32 program = 3;
+}
+message RecentPlayerOptions {
+	optional uint64 account_id = 1 ;
+	repeated bgs.protocol.v2.Attribute attribute = 5 ;
+}
+message ClearRecentPlayersOptions {
+	optional fixed32 program = 1;
+}
+message RecentPlayerRemovedAssignment {
+	optional uint64 id = 1;
+}
+message RecentPlayer {
+	optional uint64 id = 1;
+	optional fixed32 program = 2;
+	repeated bgs.protocol.v2.Attribute attribute = 4;
+	optional uint64 creation_time_us = 5;
+	optional uint64 modified_time_us = 6;
+	optional uint64 counter = 7;
+}
+message RecentPlayersState {
+	repeated bgs.protocol.recent_players.v1.client.RecentPlayer player = 1;
+}
+

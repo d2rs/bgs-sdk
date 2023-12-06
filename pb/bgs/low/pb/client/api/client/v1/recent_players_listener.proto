@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+package bgs.protocol.recent_players.v1.client;
+
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v1/recent_players_types.proto";
+
+service RecentPlayersListener {
+	rpc OnRecentPlayersAdded(.bgs.protocol.recent_players.v1.client.RecentPlayersAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	rpc OnRecentPlayersRemoved(.bgs.protocol.recent_players.v1.client.RecentPlayersRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 2;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.recent_players.v1.client.RecentPlayersListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message RecentPlayersAddedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.recent_players.v1.client.RecentPlayer player = 2;
+}
+message RecentPlayersRemovedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.recent_players.v1.client.RecentPlayerRemovedAssignment player = 2;
+}
+

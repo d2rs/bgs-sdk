@@ -1,0 +1,38 @@
+syntax = "proto2";
+
+package bgs.protocol.challenge.v1;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+option cc_generic_services = false;
+
+service ChallengeListener {
+	rpc OnExternalChallenge(.bgs.protocol.challenge.v1.ChallengeExternalRequest) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 3;
+	}
+	rpc OnExternalChallengeResult(.bgs.protocol.challenge.v1.ChallengeExternalResult) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 4;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.challenge.ChallengeNotify";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+}
+
+message ChallengeExternalRequest {
+	optional string request_token = 1;
+	optional string payload_type = 2;
+	optional bytes payload = 3;
+}
+message ChallengeExternalResult {
+	optional string request_token = 1;
+	optional bool passed = 2 [default = true];
+}
+

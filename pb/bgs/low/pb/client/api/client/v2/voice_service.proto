@@ -1,0 +1,47 @@
+syntax = "proto2";
+
+package bgs.protocol.voice.v2.client;
+
+import "bgs/low/pb/client/voice_types.proto";
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/account_types.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+service VoiceService {
+	rpc CreateLoginCredentials(.bgs.protocol.voice.v2.client.CreateLoginCredentialsRequest) returns(.bgs.protocol.voice.v2.client.CreateLoginCredentialsResponse) { 
+		option (method_options).id = 1;
+	}
+	rpc CreateChannelSttToken(.bgs.protocol.voice.v2.client.CreateChannelSttTokenRequest) returns(.bgs.protocol.voice.v2.client.CreateChannelSttTokenResponse) { 
+		option (method_options).id = 2;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.voice.v2.client.VoiceService";
+	option (service_options).shard_name = "voice";
+	option (sdk_service_options).outbound = true;
+}
+
+message CreateLoginCredentialsRequest {
+	optional bgs.protocol.account.v1.AccountId agent_account_id = 1 ;
+	optional uint32 version = 2 ;
+	option (message_options).custom_select_shard = true;
+}
+message CreateLoginCredentialsResponse {
+	optional bgs.protocol.VoiceCredentials credentials = 1;
+}
+message CreateChannelSttTokenRequest {
+	optional bgs.protocol.account.v1.AccountId agent_account_id = 1 ;
+	optional string channel_uri = 2 ;
+	optional uint32 version = 3 ;
+	option (message_options).custom_select_shard = true;
+}
+message CreateChannelSttTokenResponse {
+	optional string token = 1;
+}
+

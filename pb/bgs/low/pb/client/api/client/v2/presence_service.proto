@@ -1,0 +1,61 @@
+syntax = "proto2";
+
+package bgs.protocol.presence.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/api/client/v2/presence_types.proto";
+
+option cc_generic_services = false;
+
+service PresenceService {
+	rpc BatchSubscribe(.bgs.protocol.presence.v2.client.BatchSubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 3;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_INSTANCE_ID;
+	}
+	rpc BatchUnsubscribe(.bgs.protocol.presence.v2.client.BatchUnsubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 4;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_INSTANCE_ID;
+	}
+	rpc Query(.bgs.protocol.presence.v2.client.QueryRequest) returns(.bgs.protocol.presence.v2.client.QueryResponse) { 
+		option (method_options).id = 5;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_INSTANCE_ID;
+	}
+	rpc Update(.bgs.protocol.presence.v2.client.UpdateRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 6;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_INSTANCE_ID;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.presence.v2.client.PresenceService";
+	option (service_options).shard_name = "presence_aggregator";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message BatchSubscribeRequest {
+	repeated uint64 account_ids = 1 [packed = true];
+}
+message BatchUnsubscribeRequest {
+	repeated uint64 account_ids = 1 [packed = true];
+}
+message QueryRequest {
+	optional uint64 account_id = 1 ;
+	optional bgs.protocol.presence.v2.PresenceQueryBehavior query_behavior = 2;
+	repeated bgs.protocol.presence.v2.PresenceFieldKey keys = 3 ;
+	optional uint64 since_us = 4;
+}
+message QueryResponse {
+	repeated bgs.protocol.presence.v2.PresenceFieldState states = 1;
+}
+message UpdateRequest {
+	repeated bgs.protocol.presence.v2.PresenceFieldUpdate updates = 1;
+}
+

@@ -1,0 +1,31 @@
+syntax = "proto2";
+
+package bgs.protocol.leaderboard.v1.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/account_types.proto";
+
+message Score {
+	optional string type = 1 ;
+	optional double value = 2;
+}
+message Rank {
+	optional bgs.protocol.account.v2.Identity user = 1;
+	optional string leaderboard_id = 2;
+	optional string entity_id = 3;
+	optional string battle_tag = 4;
+	optional uint64 creation_time_ms = 5;
+	optional uint64 position = 6;
+	optional bgs.protocol.leaderboard.v1.client.Score score = 7;
+	optional bytes payload = 8;
+	optional uint64 version = 9;
+}
+

@@ -1,0 +1,51 @@
+syntax = "proto2";
+
+package bgs.protocol.channel.v2;
+
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/api/client/v2/channel_enum.proto";
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/account_types.proto";
+import "bgs/low/pb/client/role_types.proto";
+import "bgs/low/pb/client/channel_role_set.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/channel_types.proto";
+
+message CreateChannelServerOptions {
+	optional bgs.protocol.channel.v2.UniqueChannelType type = 1;
+	optional string name = 2;
+	optional bgs.protocol.channel.v2.PrivacyLevel privacy_level = 3;
+	repeated bgs.protocol.v2.Attribute attribute = 4;
+	repeated bgs.protocol.channel.v2.CreateMemberOptions member = 5;
+	optional string collection_id = 6;
+}
+message ChannelStateOptions {
+	repeated bgs.protocol.v2.Attribute attribute = 1;
+	optional bgs.protocol.channel.v2.PrivacyLevel privacy_level = 2;
+}
+message ChannelStateAssignment {
+	optional string name = 1;
+	repeated bgs.protocol.v2.Attribute attribute = 2;
+	optional bgs.protocol.channel.v2.PrivacyLevel privacy_level = 3;
+}
+message UpdateMemberStateOptions {
+	optional bgs.protocol.account.v1.GameAccountHandle member_id = 1;
+	repeated bgs.protocol.v2.Attribute attribute = 2;
+}
+message MemberStateAssignment {
+	optional bgs.protocol.account.v1.GameAccountHandle member_id = 1;
+	repeated bgs.protocol.v2.Attribute attribute = 2;
+}
+message ActiveChannelDescription {
+	optional bgs.protocol.channel.v2.UniqueChannelType type = 1;
+	optional bgs.protocol.channel.v2.ChannelId channel_id = 2;
+}
+

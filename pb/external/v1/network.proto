@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+package classic.protocol.external.v1.network;
+
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+option cc_generic_services = false;
+option optimize_for = CODE_SIZE;
+
+// 0x44432E9B
+service NetworkService {
+	rpc GetEchoServerList(.bgs.protocol.NoData) returns(EchoServerListResponse) { 
+		option (method_options).id = 2101855519; // 0x7D47C51F
+	}
+
+	rpc SendUDPTest(SendUDPRequest) returns(SendUDPResponse) { 
+		option (method_options).id = 3771312268; // 0xE0C9A88C
+	}
+
+	option (service_options).descriptor_hash = 1145253531; // 0x44432E9B
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).outbound = true;
+}
+
+message EchoServerInfo{}
+
+message EchoServerListResponse{}
+
+message SendUDPRequest{}
+
+message SendUDPResponse{}
+
+message UDPTestRequest{}
+
+message UDPTestResponse{}

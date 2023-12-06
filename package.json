@@ -1,0 +1,23 @@
+{
+  "name": "bgs-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ejt1/bgs-sdk-js.git"
+  },
+  "author": "ejt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ejt1/bgs-sdk-js/issues"
+  },
+  "homepage": "https://github.com/ejt1/bgs-sdk-js#readme",
+  "dependencies": {
+    "protobufjs": "^7.2.5",
+    "ws": "^8.14.2"
+  }
+}

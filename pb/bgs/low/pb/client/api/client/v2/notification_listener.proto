@@ -1,0 +1,34 @@
+syntax = "proto2";
+
+package bgs.protocol.notification.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/account_types.proto";
+import "bgs/low/pb/client/api/client/v2/notification_types.proto";
+
+option cc_generic_services = false;
+
+service NotificationListener {
+	rpc OnNotificationReceived(.bgs.protocol.notification.v2.client.NotificationReceivedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.notification.v2.client.NotificationListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message NotificationReceivedNotification {
+	repeated bgs.protocol.notification.v2.client.Notification notifications = 1;
+}
+

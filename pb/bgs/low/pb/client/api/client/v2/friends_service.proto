@@ -1,0 +1,145 @@
+syntax = "proto2";
+
+package bgs.protocol.friends.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/invitation_types.proto";
+import "bgs/low/pb/client/api/client/v2/friends_types.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+service FriendsService {
+	rpc Subscribe(.bgs.protocol.friends.v2.client.SubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc Unsubscribe(.bgs.protocol.friends.v2.client.UnsubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 2;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetSentInvitations(.bgs.protocol.friends.v2.client.GetSentInvitationsRequest) returns(.bgs.protocol.friends.v2.client.GetSentInvitationsResponse) { 
+		option (method_options).id = 3;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetReceivedInvitations(.bgs.protocol.friends.v2.client.GetReceivedInvitationsRequest) returns(.bgs.protocol.friends.v2.client.GetReceivedInvitationsResponse) { 
+		option (method_options).id = 4;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetFriends(.bgs.protocol.friends.v2.client.GetFriendsRequest) returns(.bgs.protocol.friends.v2.client.GetFriendsResponse) { 
+		option (method_options).id = 5;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc IsFriend(.bgs.protocol.friends.v2.client.IsFriendRequest) returns(.bgs.protocol.friends.v2.client.IsFriendResponse) { 
+		option (method_options).id = 6;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc ViewFriends(.bgs.protocol.friends.v2.client.ViewFriendsRequest) returns(.bgs.protocol.friends.v2.client.ViewFriendsResponse) { 
+		option (method_options).id = 7;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc SendInvitation(.bgs.protocol.friends.v2.client.SendInvitationRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 8;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc AcceptInvitation(.bgs.protocol.friends.v2.client.AcceptInvitationRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 9;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc RevokeInvitation(.bgs.protocol.friends.v2.client.RevokeInvitationRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 10;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc RevokeAllInvitations(.bgs.protocol.friends.v2.client.RevokeAllInvitationsRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 11;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc IgnoreInvitation(.bgs.protocol.friends.v2.client.IgnoreInvitationRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 12;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc RemoveFriend(.bgs.protocol.friends.v2.client.RemoveFriendRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 13;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc UpdateFriendState(.bgs.protocol.friends.v2.client.UpdateFriendStateRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 14;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.friends.v2.client.FriendsService";
+	option (service_options).shard_name = "friends";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message SubscribeRequest {
+}
+message UnsubscribeRequest {
+}
+message GetSentInvitationsRequest {
+	optional uint64 continuation = 1;
+}
+message GetSentInvitationsResponse {
+	repeated bgs.protocol.friends.v2.client.SentInvitation invitations = 1;
+	optional uint64 continuation = 2;
+}
+message GetReceivedInvitationsRequest {
+	optional uint64 continuation = 1;
+}
+message GetReceivedInvitationsResponse {
+	repeated bgs.protocol.friends.v2.client.ReceivedInvitation invitations = 1;
+	optional uint64 continuation = 2;
+}
+message GetFriendsRequest {
+	optional bgs.protocol.friends.v2.client.GetFriendsOptions options = 1;
+	optional uint64 continuation = 2;
+}
+message GetFriendsResponse {
+	repeated bgs.protocol.friends.v2.client.Friend friends = 1;
+	optional uint64 continuation = 2;
+}
+message IsFriendRequest {
+	optional uint64 target_account_id = 1;
+}
+message IsFriendResponse {
+	optional bool result = 1;
+}
+message ViewFriendsRequest {
+	optional uint64 target_account_id = 1;
+	optional uint64 continuation = 2;
+}
+message ViewFriendsResponse {
+	repeated bgs.protocol.friends.v2.client.FriendOfFriend friends = 1;
+	optional uint64 continuation = 2;
+}
+message SendInvitationRequest {
+	optional bgs.protocol.friends.v2.client.SendInvitationTarget target = 1;
+	optional bgs.protocol.friends.v2.client.SendInvitationOptions options = 2;
+}
+message RevokeInvitationRequest {
+	optional uint64 invitation_id = 1;
+}
+message RevokeAllInvitationsRequest {
+}
+message AcceptInvitationRequest {
+	optional uint64 invitation_id = 1;
+	optional bgs.protocol.friends.v2.client.AcceptInvitationOptions options = 2;
+}
+message IgnoreInvitationRequest {
+	optional uint64 invitation_id = 1;
+}
+message RemoveFriendRequest {
+	optional uint64 target_account_id = 1;
+}
+message UpdateFriendStateRequest {
+	optional uint64 target_account_id = 1;
+	optional bgs.protocol.friends.v2.client.UpdateFriendStateOptions options = 2;
+}
+

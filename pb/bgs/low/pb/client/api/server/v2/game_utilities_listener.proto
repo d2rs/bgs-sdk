@@ -1,0 +1,58 @@
+syntax = "proto2";
+
+package bgs.protocol.game_utilities.v2.server;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/account_types.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/api/server/v2/game_utilities_service_types.proto";
+
+option cc_generic_services = false;
+
+service GameUtilitiesListener {
+	rpc ProcessClientTask(.bgs.protocol.game_utilities.v2.server.ProcessClientTaskRequest) returns(.bgs.protocol.game_utilities.v2.server.ProcessClientTaskResponse) { 
+		option (method_options).id = 1;
+	}
+	rpc ProcessServerTask(.bgs.protocol.game_utilities.v2.server.ProcessServerTaskRequest) returns(.bgs.protocol.game_utilities.v2.server.ProcessServerTaskResponse) { 
+		option (method_options).id = 2;
+	}
+	rpc ProcessAdminTask(.bgs.protocol.game_utilities.v2.server.ProcessAdminTaskRequest) returns(.bgs.protocol.game_utilities.v2.server.ProcessAdminTaskResponse) { 
+		option (method_options).id = 3;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.game_utilities.v2.server.GameUtilitiesListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+}
+
+message ProcessAdminTaskRequest {
+	repeated bgs.protocol.v2.Attribute attribute = 1;
+	repeated bgs.protocol.v2.Attribute payload = 2;
+}
+message ProcessAdminTaskResponse {
+	repeated bgs.protocol.v2.Attribute result = 1;
+}
+message ProcessClientTaskRequest {
+	repeated bgs.protocol.v2.Attribute attribute = 1;
+	repeated bgs.protocol.v2.Attribute payload = 2;
+	optional bgs.protocol.game_utilities.v2.server.ClientInfo client_info = 3;
+}
+message ProcessClientTaskResponse {
+	repeated bgs.protocol.v2.Attribute result = 1;
+}
+message ProcessServerTaskRequest {
+	repeated bgs.protocol.v2.Attribute attribute = 1;
+	repeated bgs.protocol.v2.Attribute payload = 2;
+}
+message ProcessServerTaskResponse {
+	repeated bgs.protocol.v2.Attribute result = 1;
+}
+

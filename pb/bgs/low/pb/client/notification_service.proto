@@ -1,0 +1,53 @@
+syntax = "proto2";
+
+package bgs.protocol.notification.v1;
+
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/notification_types.proto";
+
+option cc_generic_services = false;
+
+service NotificationService {
+	rpc SendNotification(.bgs.protocol.notification.v1.Notification) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_DISABLED;
+		option (method_options).custom_region_resolver = "ResolveSendNotification";
+	}
+	rpc Subscribe(.bgs.protocol.notification.v1.SubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 6;
+	}
+	rpc Unsubscribe(.bgs.protocol.notification.v1.UnsubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 7;
+	}
+	rpc Publish(.bgs.protocol.notification.v1.PublishRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 8;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.notification.NotificationService";
+	option (service_options).shard_name = "notification";
+	option (sdk_service_options).outbound = true;
+}
+service NotificationListener {
+	rpc OnNotificationReceived(.bgs.protocol.notification.v1.Notification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_DISABLED;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.notification.NotificationListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+}
+
+message SubscribeRequest {
+	optional bgs.protocol.notification.v1.Subscription subscription = 1;
+}
+message UnsubscribeRequest {
+	optional bgs.protocol.notification.v1.Subscription subscription = 1;
+}
+message PublishRequest {
+	optional bgs.protocol.notification.v1.Target target = 1;
+	optional bgs.protocol.notification.v1.Notification notification = 2;
+}
+

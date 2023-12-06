@@ -1,0 +1,75 @@
+syntax = "proto2";
+
+package bgs.protocol.friends.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/invitation_types.proto";
+import "bgs/low/pb/client/api/client/v2/friends_types.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+service FriendsListener {
+	rpc OnFriendAdded(.bgs.protocol.friends.v2.client.FriendAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	rpc OnFriendRemoved(.bgs.protocol.friends.v2.client.FriendRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 2;
+	}
+	rpc OnReceivedInvitationAdded(.bgs.protocol.friends.v2.client.ReceivedInvitationAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 3;
+	}
+	rpc OnReceivedInvitationRemoved(.bgs.protocol.friends.v2.client.ReceivedInvitationRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 4;
+	}
+	rpc OnSentInvitationAdded(.bgs.protocol.friends.v2.client.SentInvitationAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 5;
+	}
+	rpc OnSentInvitationRemoved(.bgs.protocol.friends.v2.client.SentInvitationRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 6;
+	}
+	rpc OnUpdateFriendState(.bgs.protocol.friends.v2.client.UpdateFriendStateNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 7;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.friends.v2.client.FriendsListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message FriendAddedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.Friend friends = 2;
+}
+message FriendRemovedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.RemovedFriendAssignment assignments = 2;
+}
+message ReceivedInvitationAddedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.ReceivedInvitation invitations = 2;
+}
+message ReceivedInvitationRemovedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.RemovedInvitationAssignment assignments = 2;
+}
+message SentInvitationAddedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.SentInvitation invitations = 2;
+}
+message SentInvitationRemovedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.RemovedInvitationAssignment assignments = 2;
+}
+message UpdateFriendStateNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.friends.v2.client.FriendStateAssignment assignments = 2;
+}
+

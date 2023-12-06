@@ -1,0 +1,100 @@
+syntax = "proto2";
+
+package classic.protocol.external.v1.character;
+
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+
+option cc_generic_services = false;
+option optimize_for = CODE_SIZE;
+
+// 0x607FD196
+service CharacterService {
+	rpc CreateCharacter(CreateCharacterRequest) returns(CreateCharacterResponse) { 
+		option (method_options).id = 70975157; // 0x43AFEB5
+	}
+
+	rpc DeleteCharacter(DeleteCharacterRequest) returns(DeleteCharacterResponse) { 
+		option (method_options).id = 2715099288; // 0xA1D52098
+	}
+
+	rpc ConvertCharacter(ConvertCharacterRequest) returns(ConvertCharacterResponse) { 
+		option (method_options).id = 2963790546; // 0xB0A7DAD2
+	}
+
+	rpc ReadCharacterList(ReadCharacterListRequest) returns(ReadCharacterListResponse) { 
+		option (method_options).id = 1199708177; // 0x47821811
+	}
+
+	rpc UseCharacter(UseCharacterRequest) returns(UseCharacterResponse) { 
+		option (method_options).id = 1785752262; // 0x6A706AC6
+	}
+
+	option (service_options).descriptor_hash = 1618989462; // 0x607FD196
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).outbound = true;
+}
+
+enum CharacterFlags {
+    None = 0x00;
+    Newbie = 0x01;
+    Error = 0x02;
+    Hardcore = 0x04;
+    Dead = 0x08;
+    SaveProcess = 0x10;
+    Expansion = 0x20;
+    Ladder = 0x40;
+    NeedsRenaming = 0x80;
+    WeaponSwitch = 0x2000;
+};
+
+message CharacterSummary {}
+
+message CreateCharacterRequest {
+  required string name = 1;
+  required uint32 class_id = 2;
+  required uint32 flags = 3;
+}
+
+message CreateCharacterResponse {
+  required uint32 id = 1;
+}
+
+message DeleteCharacterRequest {
+  required uint32 id = 1;
+  optional uint32 field_2 = 2;
+}
+
+message DeleteCharacterResponse {
+  required uint32 field_1 = 1;
+}
+
+message ConvertCharacterRequest {
+  required uint32 id = 1;
+}
+
+message ConvertCharacterResponse {
+}
+
+message ReadCharacterListRequest {
+  optional uint32 id = 1;
+}
+
+message Character {
+  optional uint32 id = 1;
+  optional string name = 2;
+  optional string data = 3;
+}
+
+message ReadCharacterListResponse {
+  optional uint32 max_characters = 1;
+  repeated Character characters = 2;
+}
+
+message UseCharacterRequest {
+}
+
+message UseCharacterResponse {
+}

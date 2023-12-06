@@ -1,0 +1,153 @@
+syntax = "proto2";
+
+package classic.protocol.external.v1.game_management;
+
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+option cc_generic_services = false;
+option optimize_for = CODE_SIZE;
+
+// 0x110F2741
+service GameManagementService {
+	rpc GameCreate(GameCreateRequest) returns(GameCreateResponse) { 
+		option (method_options).id = 2467281817; // 0x930FBB99
+	}
+
+	rpc GameJoin(GameJoinRequest) returns(GameJoinResponse) { 
+		option (method_options).id = 2781616465; // 0xA5CC1951
+	}
+
+	rpc GameList(GameListRequest) returns(GameListResponse) { 
+		option (method_options).id = 2783616877; // 0xA5EA9F6D
+	}
+
+	rpc GameDetail(GameDetailRequest) returns(GameDetailResponse) { 
+		option (method_options).id = 3050115924; // 0xB5CD1354
+	}
+
+	rpc GameCreateQueueTime(GameCreateQueueTimeRequest) returns(GameCreateQueueTimeResponse) { 
+		option (method_options).id = 1596840709; // 0x5F2DDB05
+	}
+
+	rpc GameMatchmake(GameMatchmakeRequest) returns(GameMatchmakeResponse) { 
+		option (method_options).id = 2785399268; // 0xA605D1E4
+	}
+
+	rpc GameGetSitePingList(.bgs.protocol.NoData) returns(GameSitePingListResponse) { 
+		option (method_options).id = 3144534692; // 0xBB6DCAA4
+	}
+
+	option (service_options).descriptor_hash = 286205761; // 0x110F2741
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).outbound = true;
+}
+
+message GameAttribute {}
+
+enum GameFlags {
+  GAME_FLAGS_UNDEFINED = 0;
+  GAME_FLAGS_HARDCORE = 0x800;
+  GAME_FLAGS_DIFFICULTY_NIGHTMARE = 0x1000;
+  GAME_FLAGS_DIFFICULTY_HELL = 0x2000;
+  GAME_FLAGS_UNK_ALWAYS_SET = 0x20000; // Not sure. Could be "auto invite to party"
+  GAME_FLAGS_EXPANSION = 0x100000;
+  GAME_FLAGS_LADDER = 0x200000;
+  GAME_FLAGS_ITEM_SPACING = 0x400000;
+  GAME_FLAGS_UNK_RESPEC_AVAILABLE = 0x800000; // Not sure about this one, seems to be used around stats.
+}
+
+enum Difficulty {
+  DIFFICULTY_NORMAL = 0;
+  DIFFICULTY_NIGHTMARE = 1;
+  DIFFICULTY_HELL = 2;
+}
+
+message GameCreateRequest {
+  optional uint32 character_id = 1;
+  optional string name = 2;
+  optional string password = 3;
+  optional string description = 6;
+  repeated GameSiteLatency latencies = 7;
+  optional uint32 max_level_difference = 9;
+  optional uint32 max_player_count = 10;
+  optional uint32 game_flags = 11;
+  optional string unknown12 = 12;
+  optional string unknown13 = 13;
+  optional uint32 unknown14 = 14;
+}
+
+message GameCreateResponse {
+  optional uint32 unknown1 = 1;
+  optional uint32 unknown2 = 2;
+}
+
+message GameJoinRequest {
+  optional uint32 character_id = 1;
+  optional string name = 2;
+  optional string password = 3;
+  optional string unknown4 = 4;
+  optional uint32 unknown5 = 5;
+}
+
+message GameJoinResponse {
+  optional string address = 1;
+  optional uint32 port = 2;
+  optional bytes token = 3;
+  optional uint32 character_flags = 4;
+  optional string server_build = 5;
+  optional uint32 unknown6 = 6;
+  optional uint32 game_flags = 7;
+  optional uint32 max_level_difference = 8;
+  optional string server_name = 10;
+  optional uint32 unknown11 = 11;
+  optional uint32 max_player_count = 12;
+}
+
+message GameListInfo {}
+
+message GameListRequest {
+  optional uint32 character_id = 1;
+  optional uint32 unknown2 = 2;
+  optional string search_text = 3;
+  optional uint32 char_flags = 4;
+  optional uint32 level = 5;
+  optional string datacenter = 6;
+  optional Difficulty difficulty = 7;
+  optional uint32 unknown8 = 8;
+  repeated GameSiteLatency latencies = 9;
+}
+
+message GameListResponse {}
+
+message GameDetailPlayer {}
+
+message GameDetailRequest {
+  required string name = 1;
+}
+
+message GameDetailResponse {}
+
+message GameCreateQueueTimeRequest {}
+
+message GameCreateQueueTimeResponse {}
+
+message GameMatchmakeRequest {}
+
+message GameMatchmakeResponse {}
+
+message PingTargetRecord {
+  optional string address = 1;
+  optional string name = 2;
+}
+
+message GameSiteLatency {
+  optional string name = 1;
+  optional uint32 latency = 2;
+}
+
+message GameSitePingListResponse {
+  repeated PingTargetRecord targets = 1;
+  repeated string names = 2;
+}

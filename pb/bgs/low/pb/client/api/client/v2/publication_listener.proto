@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+package bgs.protocol.publication.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/api/client/v2/publication_types.proto";
+
+option cc_generic_services = false;
+
+service PublicationListener {
+	rpc OnPublicationReceived(.bgs.protocol.publication.v2.client.PublicationReceivedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+		option (method_options).enable_fanout = true;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.publication.v2.client.PublicationListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message PublicationReceivedNotification {
+	repeated bgs.protocol.publication.v2.client.Article articles = 1;
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+package classic.protocol.external.v1.setting;
+
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+
+option cc_generic_services = false;
+option optimize_for = CODE_SIZE;
+
+// 0x6781876B
+service Setting {
+    rpc ApplySetting(ApplySettingRequest) returns(.bgs.protocol.NoData) {
+        option (method_options).id = 2040330173; // 0x799CF7BD
+    }
+	rpc PushSetting(PushSettingRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 3459573279; // 0xCE34E61F
+	}
+
+	option (service_options).descriptor_hash = 1736542059; // 0x6781876B
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+}
+
+message ApplySettingRequest {}
+
+message PushSettingRequest {}

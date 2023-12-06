@@ -1,0 +1,115 @@
+syntax = "proto2";
+
+package bgs.protocol.club.v1.membership;
+
+import "bgs/low/pb/client/club_type.proto";
+import "bgs/low/pb/client/club_enum.proto";
+import "bgs/low/pb/client/role_types.proto";
+import "bgs/low/pb/client/club_role.proto";
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/entity_types.proto";
+import "bgs/low/pb/client/account_types.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/club_member_id.proto";
+import "bgs/low/pb/client/api/client/v2/attribute_types.proto";
+import "bgs/low/pb/client/club_member.proto";
+import "bgs/low/pb/client/embed_types.proto";
+import "bgs/low/pb/client/event_view_types.proto";
+import "bgs/low/pb/client/message_types.proto";
+import "bgs/low/pb/client/ets_types.proto";
+import "bgs/low/pb/client/club_stream.proto";
+import "bgs/low/pb/client/club_tag.proto";
+import "bgs/low/pb/client/club_core.proto";
+import "bgs/low/pb/client/club_invitation.proto";
+import "bgs/low/pb/client/club_membership_types.proto";
+import "bgs/low/pb/client/club_range_set.proto";
+import "bgs/low/pb/client/club_ban.proto";
+import "bgs/low/pb/client/club_name_generator.proto";
+import "bgs/low/pb/client/invitation_types.proto";
+import "bgs/low/pb/client/voice_types.proto";
+import "bgs/low/pb/client/club_types.proto";
+
+option cc_generic_services = false;
+
+service ClubMembershipListener {
+	rpc OnClubAdded(.bgs.protocol.club.v1.membership.ClubAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnClubRemoved(.bgs.protocol.club.v1.membership.ClubRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 2;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnReceivedInvitationAdded(.bgs.protocol.club.v1.membership.ReceivedInvitationAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 3;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnReceivedInvitationRemoved(.bgs.protocol.club.v1.membership.ReceivedInvitationRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 4;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnSharedSettingsChanged(.bgs.protocol.club.v1.membership.SharedSettingsChangedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 5;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnStreamMentionAdded(.bgs.protocol.club.v1.membership.StreamMentionAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 6;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnStreamMentionRemoved(.bgs.protocol.club.v1.membership.StreamMentionRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 7;
+		option (method_options).enable_fanout = true;
+	}
+	rpc OnStreamMentionAdvanceViewTime(.bgs.protocol.club.v1.membership.StreamMentionAdvanceViewTimeNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 8;
+		option (method_options).enable_fanout = true;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.club.v1.ClubMembershipListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message ClubAddedNotification {
+	optional bgs.protocol.club.v1.MemberId agent_id = 1;
+	optional bgs.protocol.club.v1.ClubMembershipDescription membership = 3;
+}
+message ClubRemovedNotification {
+	optional bgs.protocol.club.v1.MemberId agent_id = 1;
+	optional bgs.protocol.club.v1.MemberId member_id = 3;
+	optional uint64 club_id = 4;
+	optional bgs.protocol.club.v1.ClubRemovedReason reason = 5;
+}
+message ReceivedInvitationAddedNotification {
+	optional bgs.protocol.club.v1.MemberId agent_id = 1;
+	optional bgs.protocol.club.v1.ClubInvitation invitation = 3;
+}
+message ReceivedInvitationRemovedNotification {
+	optional bgs.protocol.club.v1.MemberId agent_id = 1;
+	optional fixed64 invitation_id = 3;
+	optional bgs.protocol.InvitationRemovedReason reason = 4;
+}
+message SharedSettingsChangedNotification {
+	optional bgs.protocol.account.v1.AccountId agent_id = 1;
+	optional bgs.protocol.club.v1.ClubSharedSettingsAssignment assignment = 4;
+}
+message StreamMentionAddedNotification {
+	optional bgs.protocol.club.v1.MemberId agent_id = 1;
+	optional bgs.protocol.club.v1.StreamMention mention = 3;
+}
+message StreamMentionRemovedNotification {
+	optional bgs.protocol.account.v1.AccountId agent_id = 1;
+	optional bgs.protocol.TimeSeriesId mention_id = 3;
+}
+message StreamMentionAdvanceViewTimeNotification {
+	optional bgs.protocol.account.v1.AccountId agent_id = 1;
+	optional uint64 view_time = 3;
+}
+

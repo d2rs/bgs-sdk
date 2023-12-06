@@ -1,0 +1,57 @@
+syntax = "proto2";
+
+package bgs.protocol.recent_players.v1.client;
+
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v1/recent_players_types.proto";
+
+service RecentPlayersService {
+	rpc Subscribe(.bgs.protocol.recent_players.v1.client.SubscribeRequest) returns(.bgs.protocol.recent_players.v1.client.SubscribeResponse) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc Unsubscribe(.bgs.protocol.recent_players.v1.client.UnsubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 2;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetState(.bgs.protocol.recent_players.v1.client.GetStateRequest) returns(.bgs.protocol.recent_players.v1.client.GetStateResponse) { 
+		option (method_options).id = 3;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc AddRecentPlayers(.bgs.protocol.recent_players.v1.client.AddRecentPlayersRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 4;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc ClearRecentPlayers(.bgs.protocol.recent_players.v1.client.ClearRecentPlayersRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 5;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.recent_players.v1.client.RecentPlayersService";
+	option (service_options).shard_name = "recent_players";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message SubscribeRequest {
+}
+message SubscribeResponse {
+	optional bgs.protocol.recent_players.v1.client.RecentPlayersState state = 1;
+}
+message UnsubscribeRequest {
+}
+message GetStateRequest {
+}
+message GetStateResponse {
+	optional bgs.protocol.recent_players.v1.client.RecentPlayersState state = 1;
+}
+message AddRecentPlayersRequest {
+	optional bgs.protocol.recent_players.v1.client.AddRecentPlayersOptions options = 2 ;
+}
+message ClearRecentPlayersRequest {
+	optional bgs.protocol.recent_players.v1.client.ClearRecentPlayersOptions options = 2;
+}
+

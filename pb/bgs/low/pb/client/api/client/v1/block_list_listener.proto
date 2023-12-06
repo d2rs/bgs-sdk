@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+package bgs.protocol.block_list.v1.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v1/block_list_types.proto";
+
+service BlockListListener {
+	rpc OnBlockedPlayerAdded(.bgs.protocol.block_list.v1.client.BlockedPlayerAddedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 1;
+	}
+	rpc OnBlockedPlayerRemoved(.bgs.protocol.block_list.v1.client.BlockedPlayerRemovedNotification) returns(.bgs.protocol.NO_RESPONSE) { 
+		option (method_options).id = 2;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.block_list.v1.client.BlockListListener";
+	option (service_options).type = SERVICE_TYPE_RPC_DIRECT;
+	option (sdk_service_options).inbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message BlockedPlayerAddedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.block_list.v1.client.BlockedPlayer player = 2;
+}
+message BlockedPlayerRemovedNotification {
+	optional uint64 agent_account_id = 1;
+	repeated bgs.protocol.block_list.v1.client.UnblockPlayerAssignment player = 2;
+}
+

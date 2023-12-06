@@ -1,0 +1,65 @@
+syntax = "proto2";
+
+package bgs.protocol.block_list.v1.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v1/block_list_types.proto";
+
+service BlockListService {
+	rpc Subscribe(.bgs.protocol.block_list.v1.client.SubscribeRequest) returns(.bgs.protocol.block_list.v1.client.SubscribeResponse) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc Unsubscribe(.bgs.protocol.block_list.v1.client.UnsubscribeRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 2;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetState(.bgs.protocol.block_list.v1.client.GetStateRequest) returns(.bgs.protocol.block_list.v1.client.GetStateResponse) { 
+		option (method_options).id = 3;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc BlockPlayer(.bgs.protocol.block_list.v1.client.BlockPlayerRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 4;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc UnblockPlayer(.bgs.protocol.block_list.v1.client.UnblockPlayerRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 5;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc BlockPlayerForSession(.bgs.protocol.block_list.v1.client.BlockPlayerRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 6;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.block_list.v1.client.BlockListService";
+	option (service_options).shard_name = "block_list";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message SubscribeRequest {
+}
+message SubscribeResponse {
+	optional bgs.protocol.block_list.v1.client.BlockListState state = 1;
+}
+message UnsubscribeRequest {
+}
+message GetStateRequest {
+}
+message GetStateResponse {
+	optional bgs.protocol.block_list.v1.client.BlockListState state = 1;
+}
+message BlockPlayerRequest {
+	optional bgs.protocol.block_list.v1.client.BlockPlayerOptions options = 2 ;
+}
+message UnblockPlayerRequest {
+	optional bgs.protocol.block_list.v1.client.UnblockPlayerOptions options = 2 ;
+}
+

@@ -1,0 +1,84 @@
+syntax = "proto2";
+
+package bgs.protocol.session.v2.client;
+
+import "google/protobuf/descriptor.proto";
+import "bgs/low/pb/client/global_extensions/range.proto";
+import "bgs/low/pb/client/global_extensions/field_options.proto";
+import "bgs/low/pb/client/global_extensions/routing.proto";
+import "bgs/low/pb/client/global_extensions/register_method_types.proto";
+import "bgs/low/pb/client/global_extensions/method_options.proto";
+import "bgs/low/pb/client/global_extensions/message_options.proto";
+import "bgs/low/pb/client/global_extensions/service_options.proto";
+import "bgs/low/pb/client/rpc_types.proto";
+import "bgs/low/pb/client/api/client/v2/game_account_handle.proto";
+import "bgs/low/pb/client/api/client/v2/account_types.proto";
+import "bgs/low/pb/client/api/client/v2/session_types.proto";
+
+option cc_generic_services = false;
+
+service SessionService {
+	rpc CreateSession(.bgs.protocol.session.v2.client.CreateSessionRequest) returns(.bgs.protocol.session.v2.client.CreateSessionResponse) { 
+		option (method_options).id = 1;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc RestoreSession(.bgs.protocol.session.v2.client.RestoreSessionRequest) returns(.bgs.protocol.session.v2.client.RestoreSessionResponse) { 
+		option (method_options).id = 2;
+	}
+	rpc DestroySession(.bgs.protocol.session.v2.client.DestroySessionRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 3;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetSignedSessionState(.bgs.protocol.session.v2.client.GetSignedSessionStateRequest) returns(.bgs.protocol.session.v2.client.GetSignedSessionStateResponse) { 
+		option (method_options).id = 4;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	rpc GetSessionState(.bgs.protocol.session.v2.client.GetSessionStateRequest) returns(.bgs.protocol.session.v2.client.GetSessionStateResponse) { 
+		option (method_options).id = 5;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+		option (method_options).idempotent = true;
+	}
+	rpc MarkSessionAlive(.bgs.protocol.session.v2.client.MarkSessionAliveRequest) returns(.bgs.protocol.NoData) { 
+		option (method_options).id = 6;
+		option (method_options).client_identity_routing = CLIENT_IDENTITY_ROUTING_BATTLE_NET_ACCOUNT;
+	}
+	option (service_options).descriptor_name = "bnet.protocol.session.v2.client.SessionService";
+	option (service_options).shard_name = "session";
+	option (sdk_service_options).outbound = true;
+	option (sdk_service_options).use_client_id = true;
+}
+
+message CreateSessionRequest {
+	optional bgs.protocol.account.v2.GameAccountHandle game_account = 1 ;
+	optional bgs.protocol.session.v2.client.CreateOptions options = 2;
+}
+message CreateSessionResponse {
+	optional bgs.protocol.session.v2.client.SessionId session_id = 1;
+	optional bgs.protocol.session.v2.client.SessionVariables variables = 2;
+}
+message RestoreSessionRequest {
+	optional bgs.protocol.account.v2.Identity identity = 1 ;
+	optional bytes session_key = 2;
+	optional bgs.protocol.session.v2.client.RestoreOptions options = 3;
+	optional bgs.protocol.session.v2.client.StateOptions state_options = 4;
+	option (message_options).custom_select_shard = true;
+}
+message RestoreSessionResponse {
+	optional bgs.protocol.session.v2.client.SessionId session_id = 1;
+	optional bgs.protocol.session.v2.client.SessionVariables variables = 2;
+}
+message DestroySessionRequest {
+}
+message GetSignedSessionStateRequest {
+}
+message GetSignedSessionStateResponse {
+	optional string signed_token = 1;
+}
+message GetSessionStateRequest {
+}
+message GetSessionStateResponse {
+	optional bgs.protocol.session.v2.client.SessionState session = 1;
+}
+message MarkSessionAliveRequest {
+}
+
