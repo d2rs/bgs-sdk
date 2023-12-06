@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ejt1/bgs-sdk-js.git"
+    "url": "git+https://github.com/d2rs/bgs-sdk-js.git"
   },
   "author": "ejt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ejt1/bgs-sdk-js/issues"
+    "url": "https://github.com/d2rs/bgs-sdk-js/issues"
   },
-  "homepage": "https://github.com/ejt1/bgs-sdk-js#readme",
+  "homepage": "https://github.com/d2rs/bgs-sdk-js#readme",
   "dependencies": {
     "protobufjs": "^7.2.5",
     "ws": "^8.14.2"
